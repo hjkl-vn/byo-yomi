@@ -57,6 +57,7 @@ export function GameBoard({ config, onBackToConfig }: Props) {
           state={gameState.white}
           config={config.timeControl}
           isActive={gameState.activePlayer === 'white' && gameState.status === 'running'}
+          isWaiting={gameState.status === 'waiting'}
           onTap={() => handleTap('white')}
         />
       </div>
@@ -103,6 +104,7 @@ export function GameBoard({ config, onBackToConfig }: Props) {
           state={gameState.black}
           config={config.timeControl}
           isActive={gameState.activePlayer === 'black' && gameState.status === 'running'}
+          isWaiting={gameState.status === 'waiting'}
           onTap={() => handleTap('black')}
         />
       </div>
