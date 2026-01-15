@@ -52,7 +52,7 @@ Framework-agnostic TypeScript modules:
 
 ### UI Components
 
-- **ConfigScreen** - Time control configuration with localStorage persistence (key: `byoyomi-config`)
+- **ConfigScreen** - Time control configuration with localStorage persistence (key: `byoyomi-config`). Includes preset buttons for common tournament time settings.
 - **GameBoard** - Split-screen layout with two ClockFace components, top one rotated 180°
 - **ClockFace** - Displays time, overtime info (periods/stones), move count. Mode-specific rendering for each time control type.
 - **GameOverModal** - End game overlay with rematch/new game options
