@@ -19,8 +19,8 @@ function App() {
   }
 
   return (
-    <div className="h-full w-full bg-neutral-950 lg:flex lg:items-center lg:justify-center">
-      <div className="h-full w-full lg:h-[90vh] lg:max-h-[844px] lg:w-[390px] lg:rounded-[3rem] lg:border-4 lg:border-neutral-700 lg:shadow-2xl lg:overflow-hidden">
+    <div className="h-full w-full bg-neutral-950 xl:flex xl:items-center xl:justify-center">
+      <div className="h-full w-full xl:h-[90vh] xl:max-h-[844px] xl:w-[390px] xl:rounded-[3rem] xl:border-4 xl:border-neutral-700 xl:shadow-2xl xl:overflow-hidden">
         {screen === 'config' && <ConfigScreen onStartGame={handleStartGame} />}
         {screen === 'game' && gameConfig && (
           <GameBoard config={gameConfig} onBackToConfig={handleBackToConfig} />

@@ -30,7 +30,7 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
   return (
     <div
       className={`
-        h-full w-full flex flex-col items-center justify-center
+        @container h-full w-full flex flex-col items-center justify-center px-4
         ${bgColor} ${dimmedOpacity}
         transition-opacity duration-200
         cursor-pointer select-none
@@ -51,7 +51,7 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
       {/* Main time display */}
       <div
         className={`
-          text-[6rem] sm:text-[8rem] font-bold leading-none ${timeColor}
+          text-[clamp(2.5rem,20cqw,8rem)] font-bold leading-none ${timeColor}
           ${showLowTimeWarning ? 'animate-slow-pulse' : ''}
         `}
         style={{ fontFamily: "'Space Mono', monospace" }}
