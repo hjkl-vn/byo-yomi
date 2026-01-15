@@ -69,6 +69,47 @@ function NumberInput({ id, value, onChange, min, max, className }: NumberInputPr
 
 const STORAGE_KEY = 'byoyomi-config'
 
+// Common presets for each time control type
+type ByoyomiPreset = {
+  label: string
+  mainTimeMinutes: number
+  periods: number
+  periodSeconds: number
+}
+
+type CanadianPreset = {
+  label: string
+  mainTimeMinutes: number
+  stones: number
+  overtimeMinutes: number
+}
+
+type FischerPreset = {
+  label: string
+  mainTimeMinutes: number
+  incrementSeconds: number
+}
+
+const BYOYOMI_PRESETS: ByoyomiPreset[] = [
+  { label: 'Blitz 5m+3×10s', mainTimeMinutes: 5, periods: 3, periodSeconds: 10 },
+  { label: 'Quick 10m+5×30s', mainTimeMinutes: 10, periods: 5, periodSeconds: 30 },
+  { label: 'Standard 30m+5×30s', mainTimeMinutes: 30, periods: 5, periodSeconds: 30 },
+  { label: 'Tournament 45m+5×60s', mainTimeMinutes: 45, periods: 5, periodSeconds: 60 },
+]
+
+const CANADIAN_PRESETS: CanadianPreset[] = [
+  { label: 'Quick 15m+5m/15st', mainTimeMinutes: 15, stones: 15, overtimeMinutes: 5 },
+  { label: 'Standard 30m+5m/25st', mainTimeMinutes: 30, stones: 25, overtimeMinutes: 5 },
+  { label: 'Tournament 60m+10m/25st', mainTimeMinutes: 60, stones: 25, overtimeMinutes: 10 },
+]
+
+const FISCHER_PRESETS: FischerPreset[] = [
+  { label: 'Blitz 5m+5s', mainTimeMinutes: 5, incrementSeconds: 5 },
+  { label: 'Quick 10m+10s', mainTimeMinutes: 10, incrementSeconds: 10 },
+  { label: 'Standard 30m+30s', mainTimeMinutes: 30, incrementSeconds: 30 },
+  { label: 'Long 45m+30s', mainTimeMinutes: 45, incrementSeconds: 30 },
+]
+
 type StoredConfig = {
   timeControlType: TimeControlType
   mainTimeMinutes: number
@@ -130,6 +171,36 @@ export function ConfigScreen({ onStartGame }: Props) {
 
   const updateConfig = <K extends keyof StoredConfig>(key: K, value: StoredConfig[K]) => {
     setConfig((prev) => ({ ...prev, [key]: value }))
+  }
+
+  const applyByoyomiPreset = (preset: ByoyomiPreset) => {
+    setConfig((prev) => ({
+      ...prev,
+      mainTimeMinutes: preset.mainTimeMinutes,
+      mainTimeSeconds: 0,
+      byoYomiPeriods: preset.periods,
+      byoYomiPeriodSeconds: preset.periodSeconds,
+    }))
+  }
+
+  const applyCanadianPreset = (preset: CanadianPreset) => {
+    setConfig((prev) => ({
+      ...prev,
+      mainTimeMinutes: preset.mainTimeMinutes,
+      mainTimeSeconds: 0,
+      canadianStones: preset.stones,
+      canadianOvertimeMinutes: preset.overtimeMinutes,
+      canadianOvertimeSeconds: 0,
+    }))
+  }
+
+  const applyFischerPreset = (preset: FischerPreset) => {
+    setConfig((prev) => ({
+      ...prev,
+      mainTimeMinutes: preset.mainTimeMinutes,
+      mainTimeSeconds: 0,
+      fischerIncrementSeconds: preset.incrementSeconds,
+    }))
   }
 
   const handleStart = () => {
@@ -269,6 +340,22 @@ export function ConfigScreen({ onStartGame }: Props) {
                 <span className="text-neutral-400">seconds</span>
               </div>
             </div>
+            <div>
+              <p className="text-sm font-medium text-neutral-300 mb-2 xl:mb-1">Presets</p>
+              <ul className="text-sm space-y-1">
+                {BYOYOMI_PRESETS.map((preset) => (
+                  <li key={preset.label}>
+                    <button
+                      type="button"
+                      onClick={() => applyByoyomiPreset(preset)}
+                      className="text-blue-400 hover:text-blue-300 underline underline-offset-2"
+                    >
+                      {preset.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </>
         )}
 
@@ -313,27 +400,61 @@ export function ConfigScreen({ onStartGame }: Props) {
                 <span className="text-neutral-400">seconds</span>
               </div>
             </div>
+            <div>
+              <p className="text-sm font-medium text-neutral-300 mb-2 xl:mb-1">Presets</p>
+              <ul className="text-sm space-y-1">
+                {CANADIAN_PRESETS.map((preset) => (
+                  <li key={preset.label}>
+                    <button
+                      type="button"
+                      onClick={() => applyCanadianPreset(preset)}
+                      className="text-blue-400 hover:text-blue-300 underline underline-offset-2"
+                    >
+                      {preset.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </>
         )}
 
         {/* Fischer Settings */}
         {config.timeControlType === 'fischer' && (
-          <div>
-            <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
-              Increment per Move
-            </label>
-            <div className="flex gap-2 items-center">
-              <NumberInput
-                id="fischerIncrementSeconds"
-                value={config.fischerIncrementSeconds}
-                onChange={(v) => updateConfig('fischerIncrementSeconds', v)}
-                min={0}
-                max={999}
-                className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <span className="text-neutral-400">seconds</span>
+          <>
+            <div>
+              <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
+                Increment per Move
+              </label>
+              <div className="flex gap-2 items-center">
+                <NumberInput
+                  id="fischerIncrementSeconds"
+                  value={config.fischerIncrementSeconds}
+                  onChange={(v) => updateConfig('fischerIncrementSeconds', v)}
+                  min={0}
+                  max={999}
+                  className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span className="text-neutral-400">seconds</span>
+              </div>
             </div>
-          </div>
+            <div>
+              <p className="text-sm font-medium text-neutral-300 mb-2 xl:mb-1">Presets</p>
+              <ul className="text-sm space-y-1">
+                {FISCHER_PRESETS.map((preset) => (
+                  <li key={preset.label}>
+                    <button
+                      type="button"
+                      onClick={() => applyFischerPreset(preset)}
+                      className="text-blue-400 hover:text-blue-300 underline underline-offset-2"
+                    >
+                      {preset.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
         )}
 
         {/* Sound Section Divider */}
