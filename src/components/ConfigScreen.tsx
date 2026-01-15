@@ -171,8 +171,8 @@ export function ConfigScreen({ onStartGame }: Props) {
   return (
     <div className="h-full flex flex-col bg-neutral-900 text-white overflow-y-auto">
       {/* Header */}
-      <div className="p-6 border-b border-neutral-700 text-center">
-        <h1 className="text-3xl font-bold">Byoyomi (秒読み)</h1>
+      <div className="p-6 xl:p-4 border-b border-neutral-700 text-center">
+        <h1 className="text-3xl xl:text-2xl font-bold">Byoyomi (秒読み)</h1>
         <div className="flex items-center justify-center gap-1 mt-1">
           <p className="text-neutral-400">HJKL Labs</p>
           <button
@@ -186,7 +186,7 @@ export function ConfigScreen({ onStartGame }: Props) {
       </div>
 
       {/* Form */}
-      <div className="flex-1 p-6 space-y-6">
+      <div className="flex-1 p-6 xl:p-4 space-y-6 xl:space-y-3">
         {/* Clock Settings Section */}
         <div className="text-sm font-medium text-neutral-500 uppercase tracking-wide">
           Clock Settings
@@ -194,13 +194,15 @@ export function ConfigScreen({ onStartGame }: Props) {
 
         {/* Time Control Type */}
         <div>
-          <label className="block text-sm font-medium text-neutral-300 mb-2">Time Control</label>
+          <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
+            Time Control
+          </label>
           <select
             id="timeControlType"
             name="timeControlType"
             value={config.timeControlType}
             onChange={(e) => updateConfig('timeControlType', e.target.value as TimeControlType)}
-            className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="byoyomi">Byoyomi</option>
             <option value="canadian">Canadian Byoyomi</option>
@@ -210,7 +212,9 @@ export function ConfigScreen({ onStartGame }: Props) {
 
         {/* Main Time */}
         <div>
-          <label className="block text-sm font-medium text-neutral-300 mb-2">Main Time</label>
+          <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
+            Main Time
+          </label>
           <div className="flex gap-2 items-center">
             <NumberInput
               id="mainTimeMinutes"
@@ -218,7 +222,7 @@ export function ConfigScreen({ onStartGame }: Props) {
               onChange={(v) => updateConfig('mainTimeMinutes', v)}
               min={0}
               max={999}
-              className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-neutral-400">minutes</span>
             <NumberInput
@@ -227,7 +231,7 @@ export function ConfigScreen({ onStartGame }: Props) {
               onChange={(v) => updateConfig('mainTimeSeconds', v)}
               min={0}
               max={59}
-              className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-neutral-400">seconds</span>
           </div>
@@ -237,18 +241,20 @@ export function ConfigScreen({ onStartGame }: Props) {
         {config.timeControlType === 'byoyomi' && (
           <>
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-2">Periods</label>
+              <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
+                Periods
+              </label>
               <NumberInput
                 id="byoYomiPeriods"
                 value={config.byoYomiPeriods}
                 onChange={(v) => updateConfig('byoYomiPeriods', v)}
                 min={1}
                 max={99}
-                className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-2">
+              <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
                 Time per Period
               </label>
               <div className="flex gap-2 items-center">
@@ -258,7 +264,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   onChange={(v) => updateConfig('byoYomiPeriodSeconds', v)}
                   min={1}
                   max={999}
-                  className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span className="text-neutral-400">seconds</span>
               </div>
@@ -270,7 +276,7 @@ export function ConfigScreen({ onStartGame }: Props) {
         {config.timeControlType === 'canadian' && (
           <>
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-2">
+              <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
                 Stones per Period
               </label>
               <NumberInput
@@ -279,11 +285,11 @@ export function ConfigScreen({ onStartGame }: Props) {
                 onChange={(v) => updateConfig('canadianStones', v)}
                 min={1}
                 max={99}
-                className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-2">
+              <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
                 Overtime Duration
               </label>
               <div className="flex gap-2 items-center">
@@ -293,7 +299,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   onChange={(v) => updateConfig('canadianOvertimeMinutes', v)}
                   min={0}
                   max={999}
-                  className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span className="text-neutral-400">minutes</span>
                 <NumberInput
@@ -302,7 +308,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   onChange={(v) => updateConfig('canadianOvertimeSeconds', v)}
                   min={0}
                   max={59}
-                  className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span className="text-neutral-400">seconds</span>
               </div>
@@ -313,7 +319,7 @@ export function ConfigScreen({ onStartGame }: Props) {
         {/* Fischer Settings */}
         {config.timeControlType === 'fischer' && (
           <div>
-            <label className="block text-sm font-medium text-neutral-300 mb-2">
+            <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
               Increment per Move
             </label>
             <div className="flex gap-2 items-center">
@@ -323,7 +329,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                 onChange={(v) => updateConfig('fischerIncrementSeconds', v)}
                 min={0}
                 max={999}
-                className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <span className="text-neutral-400">seconds</span>
             </div>
@@ -331,21 +337,23 @@ export function ConfigScreen({ onStartGame }: Props) {
         )}
 
         {/* Sound Section Divider */}
-        <div className="border-t border-neutral-700 pt-6">
-          <div className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-4">
+        <div className="border-t border-neutral-700 pt-6 xl:pt-3">
+          <div className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-4 xl:mb-2">
             Sound
           </div>
         </div>
 
         {/* Sound Profile */}
         <div className="-mt-2">
-          <label className="block text-sm font-medium text-neutral-300 mb-2">Sound Profile</label>
+          <label className="block text-sm font-medium text-neutral-300 mb-2 xl:mb-1">
+            Sound Profile
+          </label>
           <select
             id="soundProfile"
             name="soundProfile"
             value={config.soundProfile}
             onChange={(e) => updateConfig('soundProfile', e.target.value as SoundProfile)}
-            className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 xl:p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="silent">Silent – No sounds</option>
             <option value="subtle">Subtle – Quiet beeps and countdown</option>
@@ -355,10 +363,10 @@ export function ConfigScreen({ onStartGame }: Props) {
       </div>
 
       {/* Start Button */}
-      <div className="p-6 border-t border-neutral-700">
+      <div className="p-6 xl:p-4 border-t border-neutral-700">
         <button
           onClick={handleStart}
-          className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-4 px-8 rounded-lg text-xl transition-colors"
+          className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-4 xl:py-3 px-8 rounded-lg text-xl transition-colors"
         >
           Start Game
         </button>
