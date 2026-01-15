@@ -7,7 +7,7 @@ import type {
   SoundProfile,
 } from '../core/gameState'
 
-const APP_VERSION = '1.1.0'
+const APP_VERSION = __APP_VERSION__
 
 type Props = {
   onStartGame: (config: GameConfig) => void
@@ -22,6 +22,7 @@ function MastodonIcon({ className }: { className?: string }) {
 }
 
 type NumberInputProps = {
+  id: string
   value: number
   onChange: (value: number) => void
   min: number
@@ -29,7 +30,7 @@ type NumberInputProps = {
   className?: string
 }
 
-function NumberInput({ value, onChange, min, max, className }: NumberInputProps) {
+function NumberInput({ id, value, onChange, min, max, className }: NumberInputProps) {
   const [localValue, setLocalValue] = useState(String(value))
 
   // Sync local value when prop changes (e.g., reset)
@@ -53,6 +54,8 @@ function NumberInput({ value, onChange, min, max, className }: NumberInputProps)
 
   return (
     <input
+      id={id}
+      name={id}
       type="text"
       inputMode="numeric"
       pattern="[0-9]*"
@@ -188,6 +191,8 @@ export function ConfigScreen({ onStartGame }: Props) {
         <div>
           <label className="block text-sm font-medium text-neutral-300 mb-2">Time Control</label>
           <select
+            id="timeControlType"
+            name="timeControlType"
             value={config.timeControlType}
             onChange={(e) => updateConfig('timeControlType', e.target.value as TimeControlType)}
             className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -203,6 +208,7 @@ export function ConfigScreen({ onStartGame }: Props) {
           <label className="block text-sm font-medium text-neutral-300 mb-2">Main Time</label>
           <div className="flex gap-2 items-center">
             <NumberInput
+              id="mainTimeMinutes"
               value={config.mainTimeMinutes}
               onChange={(v) => updateConfig('mainTimeMinutes', v)}
               min={0}
@@ -211,6 +217,7 @@ export function ConfigScreen({ onStartGame }: Props) {
             />
             <span className="text-neutral-400">min</span>
             <NumberInput
+              id="mainTimeSeconds"
               value={config.mainTimeSeconds}
               onChange={(v) => updateConfig('mainTimeSeconds', v)}
               min={0}
@@ -227,6 +234,7 @@ export function ConfigScreen({ onStartGame }: Props) {
             <div>
               <label className="block text-sm font-medium text-neutral-300 mb-2">Periods</label>
               <NumberInput
+                id="byoYomiPeriods"
                 value={config.byoYomiPeriods}
                 onChange={(v) => updateConfig('byoYomiPeriods', v)}
                 min={1}
@@ -240,6 +248,7 @@ export function ConfigScreen({ onStartGame }: Props) {
               </label>
               <div className="flex gap-2 items-center">
                 <NumberInput
+                  id="byoYomiPeriodSeconds"
                   value={config.byoYomiPeriodSeconds}
                   onChange={(v) => updateConfig('byoYomiPeriodSeconds', v)}
                   min={1}
@@ -260,6 +269,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                 Stones per Period
               </label>
               <NumberInput
+                id="canadianStones"
                 value={config.canadianStones}
                 onChange={(v) => updateConfig('canadianStones', v)}
                 min={1}
@@ -273,6 +283,7 @@ export function ConfigScreen({ onStartGame }: Props) {
               </label>
               <div className="flex gap-2 items-center">
                 <NumberInput
+                  id="canadianOvertimeMinutes"
                   value={config.canadianOvertimeMinutes}
                   onChange={(v) => updateConfig('canadianOvertimeMinutes', v)}
                   min={0}
@@ -281,6 +292,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                 />
                 <span className="text-neutral-400">min</span>
                 <NumberInput
+                  id="canadianOvertimeSeconds"
                   value={config.canadianOvertimeSeconds}
                   onChange={(v) => updateConfig('canadianOvertimeSeconds', v)}
                   min={0}
@@ -301,6 +313,7 @@ export function ConfigScreen({ onStartGame }: Props) {
             </label>
             <div className="flex gap-2 items-center">
               <NumberInput
+                id="fischerIncrementSeconds"
                 value={config.fischerIncrementSeconds}
                 onChange={(v) => updateConfig('fischerIncrementSeconds', v)}
                 min={0}
@@ -316,6 +329,8 @@ export function ConfigScreen({ onStartGame }: Props) {
         <div>
           <label className="block text-sm font-medium text-neutral-300 mb-2">Sound Profile</label>
           <select
+            id="soundProfile"
+            name="soundProfile"
             value={config.soundProfile}
             onChange={(e) => updateConfig('soundProfile', e.target.value as SoundProfile)}
             className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
