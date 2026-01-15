@@ -49,6 +49,6 @@ describe('App desktop layout', () => {
 
   it('renders ConfigScreen by default', () => {
     render(<App />)
-    expect(screen.getByText('Byoyomi (秒読み)')).toBeInTheDocument()
+    expect(screen.getByText('Byoyomi Clock Online')).toBeInTheDocument()
   })
 })
