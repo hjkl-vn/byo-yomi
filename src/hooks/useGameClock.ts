@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import type { GameConfig, GameState, Player } from '../core/gameState'
 import { createInitialGameState } from '../core/gameState'
-import { tick, onMove } from '../core/timeControl'
+import { tick, onMove, getDisplayTime } from '../core/timeControl'
 import { useAudio } from './useAudio'
 
 export type GameClockCallbacks = {
@@ -92,15 +92,8 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
           }
 
           // Check for low time alerts (10, 5 seconds)
-          const displayMs = result.newState.isInOvertime
-            ? result.newState.overtime?.type === 'byoyomi'
-              ? result.newState.overtime.periodTimeRemainingMs
-              : result.newState.overtime?.type === 'canadian'
-                ? result.newState.overtime.overtimeRemainingMs
-                : result.newState.mainTimeRemainingMs
-            : result.newState.mainTimeRemainingMs
-
-          const displaySeconds = Math.ceil((displayMs ?? 0) / 1000)
+          const displayMs = getDisplayTime(result.newState)
+          const displaySeconds = Math.ceil(displayMs / 1000)
 
           // Low time warning at 10 seconds
           if (displaySeconds === 10 && !lowTimeAlertedRef.current.has(10)) {
@@ -148,7 +141,7 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
       const playerState = prevState[activePlayer]
 
       // Apply move to current player (increment, period reset, etc.)
-      const newPlayerState = onMove(playerState, config.timeControl)
+      const newPlayerState = onMove(playerState, configRef.current.timeControl)
 
       // Reset low time alerts for next turn
       lowTimeAlertedRef.current.clear()
@@ -163,7 +156,7 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
         activePlayer: activePlayer === 'black' ? 'white' : 'black',
       }
     })
-  }, [config.timeControl, initAudio, play, cancelScheduled])
+  }, [initAudio, play, cancelScheduled])
 
   // Pause game
   const pause = useCallback(() => {

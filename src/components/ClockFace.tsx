@@ -58,7 +58,10 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
       </div>
 
       {/* Main time display */}
-      <div className={`text-[6rem] sm:text-[8rem] font-mono font-bold leading-none ${timeColor}`}>
+      <div
+        className={`text-[6rem] sm:text-[8rem] font-bold leading-none ${timeColor}`}
+        style={{ fontFamily: "'Space Mono', monospace" }}
+      >
         {timeString}
       </div>
 

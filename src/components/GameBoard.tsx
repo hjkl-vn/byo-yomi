@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { Pause, Play, RotateCcw, Settings } from 'lucide-react'
 import type { GameConfig, Player } from '../core/gameState'
 import { ClockFace } from './ClockFace'
 import { GameOverModal } from './GameOverModal'
@@ -61,29 +62,36 @@ export function GameBoard({ config, onBackToConfig }: Props) {
         />
       </div>
 
-      {/* Center divider with pause button */}
-      <div className="h-14 bg-neutral-500 flex items-center justify-center gap-4 z-10">
+      {/* Center divider with control buttons */}
+      <div className="h-14 bg-neutral-500 flex items-center justify-center gap-3 z-10">
         {gameState.status !== 'ended' && (
           <button
             onClick={handlePauseResume}
-            className="text-white text-sm font-medium px-4 py-2 rounded bg-neutral-600 hover:bg-neutral-700 active:bg-neutral-800 transition-colors"
+            className="p-3 rounded-full bg-neutral-600 hover:bg-neutral-700 active:bg-neutral-800 transition-colors"
+            aria-label={gameState.status === 'paused' ? 'Resume' : 'Pause'}
           >
-            {gameState.status === 'paused' ? 'Resume' : 'Pause'}
+            {gameState.status === 'paused' ? (
+              <Play className="w-5 h-5 text-white" />
+            ) : (
+              <Pause className="w-5 h-5 text-white" />
+            )}
           </button>
         )}
         {gameState.status === 'paused' && (
           <>
             <button
               onClick={handleRematch}
-              className="text-white text-sm font-medium px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
+              className="p-3 rounded-full bg-neutral-700 hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
+              aria-label="Restart"
             >
-              Restart
+              <RotateCcw className="w-5 h-5 text-white" />
             </button>
             <button
               onClick={handleNewGame}
-              className="text-white text-sm font-medium px-4 py-2 rounded bg-neutral-700 hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
+              className="p-3 rounded-full bg-neutral-700 hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
+              aria-label="Settings"
             >
-              Settings
+              <Settings className="w-5 h-5 text-white" />
             </button>
           </>
         )}
