@@ -187,6 +187,11 @@ export function ConfigScreen({ onStartGame }: Props) {
 
       {/* Form */}
       <div className="flex-1 p-6 space-y-6">
+        {/* Clock Settings Section */}
+        <div className="text-sm font-medium text-neutral-500 uppercase tracking-wide">
+          Clock Settings
+        </div>
+
         {/* Time Control Type */}
         <div>
           <label className="block text-sm font-medium text-neutral-300 mb-2">Time Control</label>
@@ -325,8 +330,15 @@ export function ConfigScreen({ onStartGame }: Props) {
           </div>
         )}
 
+        {/* Sound Section Divider */}
+        <div className="border-t border-neutral-700 pt-6">
+          <div className="text-sm font-medium text-neutral-500 uppercase tracking-wide mb-4">
+            Sound
+          </div>
+        </div>
+
         {/* Sound Profile */}
-        <div>
+        <div className="-mt-2">
           <label className="block text-sm font-medium text-neutral-300 mb-2">Sound Profile</label>
           <select
             id="soundProfile"

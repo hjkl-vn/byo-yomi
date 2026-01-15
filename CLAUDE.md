@@ -10,6 +10,7 @@ npm run build         # TypeScript check + production build
 npm test              # Run all tests
 npm run test:watch    # Run tests in watch mode
 npx vitest run src/core/timeControl.test.ts  # Run a single test file
+npx vitest run src/components/App.test.tsx   # Run component tests
 npm run lint          # Run ESLint
 npm run lint:fix      # Auto-fix lint issues
 npm run format        # Format all files with Prettier
@@ -63,3 +64,4 @@ Framework-agnostic TypeScript modules:
 - Audio uses Web Audio API for sample-accurate scheduling of countdown beeps
 - Portrait-only layout with device lying flat between players
 - Tailwind CSS v4 (uses `@import 'tailwindcss'` syntax, not v3 directives)
+- Tests use jsdom environment with setup in `src/test/setup.ts`
