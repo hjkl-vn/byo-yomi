@@ -11,7 +11,6 @@ type Props = {
 }
 
 export function ClockFace({ player, state, config, isActive, isWaiting, onTap }: Props) {
-  void isWaiting // Will be used for pulsing animation in Task 5
   const displayTime = getDisplayTime(state)
   const timeString = formatTime(displayTime)
 
@@ -21,7 +20,7 @@ export function ClockFace({ player, state, config, isActive, isWaiting, onTap }:
   // Background colors
   const bgColor = player === 'black' ? 'bg-neutral-900' : 'bg-neutral-100'
   const textColor = player === 'black' ? 'text-neutral-100' : 'text-neutral-900'
-  const dimmedOpacity = isActive ? 'opacity-100' : 'opacity-50'
+  const dimmedOpacity = isActive || isWaiting ? 'opacity-100' : 'opacity-50'
 
   // Show low time warning in overtime, or in Fischer mode (sudden death)
   const showLowTimeWarning = isLowTime && (state.isInOvertime || config.type === 'fischer')
@@ -37,6 +36,7 @@ export function ClockFace({ player, state, config, isActive, isWaiting, onTap }:
         transition-opacity duration-200
         cursor-pointer select-none
         relative
+        ${isWaiting ? 'animate-pulse' : ''}
       `}
       onClick={onTap}
     >
