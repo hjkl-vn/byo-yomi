@@ -39,14 +39,14 @@ This is a Go/Baduk game clock PWA with three time control modes: byoyomi, Canadi
 
 Framework-agnostic TypeScript modules:
 
-- **gameState.ts** - Type definitions for time controls, player state, and game state. Contains `createInitialGameState()` for state initialization.
+- **gameState.ts** - Type definitions for time controls, player state, and game state. Contains `createInitialGameState()` for state initialization. Game status flows: `waiting` → `running` → `paused`/`ended`.
 - **timeControl.ts** - Pure functions for clock logic: `tick()` advances time and handles overtime transitions, `onMove()` handles turn-end effects (period resets, increments). `formatTime()` and `getDisplayTime()` for display.
 - **audioEngine.ts** - Web Audio API wrapper with generated tones. Singleton `audioEngine` instance. Supports scheduled playback for countdown sequences.
 
 ### React Layer
 
 - **App.tsx** - Screen router (config → game)
-- **hooks/useGameClock.ts** - Main game loop using `requestAnimationFrame`. Manages state transitions, audio triggers, and exposes `switchTurn`, `pause`, `resume`, `reset`.
+- **hooks/useGameClock.ts** - Main game loop using `requestAnimationFrame`. Manages state transitions, audio triggers, and exposes `start`, `switchTurn`, `pause`, `resume`, `reset`.
 - **hooks/useAudio.ts** - React wrapper around audioEngine
 - **hooks/useWakeLock.ts** - Screen Wake Lock API for keeping display on
 
