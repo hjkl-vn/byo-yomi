@@ -17,8 +17,9 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
   const animationFrameRef = useRef<number>(0)
   const lowTimeAlertedRef = useRef<Set<number>>(new Set())
   const enteredOvertimeRef = useRef<Set<Player>>(new Set())
+  const prevDisplayMsRef = useRef<number>(0)
 
-  const { initAudio, play, scheduleCountdown, cancelScheduled } = useAudio(config.soundProfile)
+  const { initAudio, play, cancelScheduled } = useAudio(config.soundProfile)
 
   // Store latest values in refs to avoid stale closures in animation loop
   const gameStateRef = useRef(gameState)
@@ -91,22 +92,27 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
             }
           }
 
-          // Check for low time alerts (10, 5 seconds)
+          // Check for low time alerts
           const displayMs = getDisplayTime(result.newState)
           const displaySeconds = Math.ceil(displayMs / 1000)
 
-          // Low time warning at 10 seconds
-          if (displaySeconds === 10 && !lowTimeAlertedRef.current.has(10)) {
-            lowTimeAlertedRef.current.add(10)
-            play('tick')
-            callbacksRef.current?.onLowTime?.(activePlayer, 10)
+          // Clear alerts if time increased (entered overtime or period reset)
+          if (displayMs > prevDisplayMsRef.current + 1000 && prevDisplayMsRef.current > 0) {
+            lowTimeAlertedRef.current.clear()
+            // Play alert for period transitions (initial overtime entry handled above)
+            if (!result.enteredOvertime) {
+              play('alert')
+            }
           }
+          prevDisplayMsRef.current = displayMs
 
-          // Schedule countdown at 5 seconds
-          if (displaySeconds === 5 && !lowTimeAlertedRef.current.has(5)) {
-            lowTimeAlertedRef.current.add(5)
-            scheduleCountdown(5)
-            callbacksRef.current?.onLowTime?.(activePlayer, 5)
+          // Beep at 5, 4, 3, 2, 1 seconds
+          if (displaySeconds <= 5 && displaySeconds >= 1) {
+            if (!lowTimeAlertedRef.current.has(displaySeconds)) {
+              lowTimeAlertedRef.current.add(displaySeconds)
+              play('tick')
+              callbacksRef.current?.onLowTime?.(activePlayer, displaySeconds)
+            }
           }
 
           return {
@@ -127,7 +133,7 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
         animationFrameRef.current = 0
       }
     }
-  }, [gameState.status, play, scheduleCountdown])
+  }, [gameState.status, play])
 
   // Switch turn (end current player's turn)
   const switchTurn = useCallback(async () => {
@@ -145,6 +151,7 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
 
       // Reset low time alerts for next turn
       lowTimeAlertedRef.current.clear()
+      prevDisplayMsRef.current = 0
       cancelScheduled()
 
       // Play click sound
@@ -175,6 +182,7 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
     cancelScheduled()
     lowTimeAlertedRef.current.clear()
     enteredOvertimeRef.current.clear()
+    prevDisplayMsRef.current = 0
     setGameState(createInitialGameState(config))
   }, [config, cancelScheduled])
 

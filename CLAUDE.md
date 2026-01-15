@@ -10,7 +10,7 @@ npm run build         # TypeScript check + production build
 npm test              # Run all tests
 npm run test:watch    # Run tests in watch mode
 npx vitest run src/core/timeControl.test.ts  # Run a single test file
-npx vitest run src/components/App.test.tsx   # Run component tests
+npx vitest run src/hooks/useGameClock.test.ts  # Run hook tests
 npm run lint          # Run ESLint
 npm run lint:fix      # Auto-fix lint issues
 npm run format        # Format all files with Prettier
@@ -41,12 +41,12 @@ Framework-agnostic TypeScript modules:
 
 - **gameState.ts** - Type definitions for time controls, player state, and game state. Contains `createInitialGameState()` for state initialization. Game status flows: `waiting` → `running` → `paused`/`ended`.
 - **timeControl.ts** - Pure functions for clock logic: `tick()` advances time and handles overtime transitions, `onMove()` handles turn-end effects (period resets, increments). `formatTime()` and `getDisplayTime()` for display.
-- **audioEngine.ts** - Web Audio API wrapper with generated tones. Singleton `audioEngine` instance. Supports scheduled playback for countdown sequences.
+- **audioEngine.ts** - Web Audio API wrapper with generated tones. Singleton `audioEngine` instance. Sound types: `click` (turn switch), `tick` (countdown), `alert` (overtime/period transitions), `gong` (game over).
 
 ### React Layer
 
 - **App.tsx** - Screen router (config → game)
-- **hooks/useGameClock.ts** - Main game loop using `requestAnimationFrame`. Manages state transitions, audio triggers, and exposes `start`, `switchTurn`, `pause`, `resume`, `reset`.
+- **hooks/useGameClock.ts** - Main game loop using `requestAnimationFrame`. Manages state transitions, audio triggers (countdown beeps at 5-1 seconds, alerts on period transitions), and exposes `start`, `switchTurn`, `pause`, `resume`, `reset`.
 - **hooks/useAudio.ts** - React wrapper around audioEngine
 - **hooks/useWakeLock.ts** - Screen Wake Lock API for keeping display on
 
@@ -61,7 +61,7 @@ Framework-agnostic TypeScript modules:
 
 - Core logic is pure TypeScript for testability (no React dependencies)
 - Time precision uses `performance.now()` via requestAnimationFrame
-- Audio uses Web Audio API for sample-accurate scheduling of countdown beeps
+- Audio countdown beeps play at 5, 4, 3, 2, 1 seconds for both main time and each overtime period
 - Portrait-only layout with device lying flat between players
 - Tailwind CSS v4 (uses `@import 'tailwindcss'` syntax, not v3 directives)
 - Tests use jsdom environment with setup in `src/test/setup.ts`
