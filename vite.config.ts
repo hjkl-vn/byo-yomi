@@ -16,9 +16,9 @@ export default defineConfig({
       registerType: 'prompt',
       includeAssets: ['favicon/*.png', 'favicon/*.ico', 'sounds/*.mp3'],
       manifest: {
-        name: 'Byo-yomi - Go Game Clock',
-        short_name: 'Byo-yomi',
-        description: 'Game clock for Go/Baduk with byo-yomi, Canadian, and Fischer time controls',
+        name: 'Byoyomi - Go Game Clock',
+        short_name: 'Byoyomi',
+        description: 'Game clock for Go/Baduk with byoyomi, Canadian, and Fischer time controls',
         theme_color: '#1a1a1a',
         background_color: '#1a1a1a',
         display: 'standalone',

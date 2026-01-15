@@ -116,7 +116,7 @@ function renderModeInfo(state: PlayerState, config: TimeControlConfig, player: '
       // In main time
       return (
         <div className={`text-2xl sm:text-3xl ${secondaryColor}`}>
-          {config.periods} x {config.periodTimeSeconds}s byo-yomi
+          {config.periods} x {config.periodTimeSeconds}s byoyomi
         </div>
       )
     }

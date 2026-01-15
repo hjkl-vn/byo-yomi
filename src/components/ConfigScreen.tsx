@@ -67,13 +67,13 @@ function NumberInput({ id, value, onChange, min, max, className }: NumberInputPr
   )
 }
 
-const STORAGE_KEY = 'byo-yomi-config'
+const STORAGE_KEY = 'byoyomi-config'
 
 type StoredConfig = {
   timeControlType: TimeControlType
   mainTimeMinutes: number
   mainTimeSeconds: number
-  // Byo-yomi
+  // Byoyomi
   byoYomiPeriods: number
   byoYomiPeriodSeconds: number
   // Canadian
@@ -172,7 +172,7 @@ export function ConfigScreen({ onStartGame }: Props) {
     <div className="h-full flex flex-col bg-neutral-900 text-white overflow-y-auto">
       {/* Header */}
       <div className="p-6 border-b border-neutral-700 text-center">
-        <h1 className="text-3xl font-bold">Byo-yomi Go Clock</h1>
+        <h1 className="text-3xl font-bold">Byoyomi (秒読み)</h1>
         <div className="flex items-center justify-center gap-1 mt-1">
           <p className="text-neutral-400">HJKL Labs</p>
           <button
@@ -197,8 +197,8 @@ export function ConfigScreen({ onStartGame }: Props) {
             onChange={(e) => updateConfig('timeControlType', e.target.value as TimeControlType)}
             className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="byoyomi">Byo-yomi</option>
-            <option value="canadian">Canadian Byo-yomi</option>
+            <option value="byoyomi">Byoyomi</option>
+            <option value="canadian">Canadian Byoyomi</option>
             <option value="fischer">Fischer</option>
           </select>
         </div>
@@ -228,7 +228,7 @@ export function ConfigScreen({ onStartGame }: Props) {
           </div>
         </div>
 
-        {/* Byo-yomi Settings */}
+        {/* Byoyomi Settings */}
         {config.timeControlType === 'byoyomi' && (
           <>
             <div>
@@ -371,7 +371,7 @@ export function ConfigScreen({ onStartGame }: Props) {
             </button>
 
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold">Byo-yomi</h2>
+              <h2 className="text-2xl font-bold">Byoyomi</h2>
               <p className="text-neutral-400 mt-1">v{APP_VERSION}</p>
             </div>
 

@@ -51,7 +51,7 @@ export function tick(state: PlayerState, config: TimeControlConfig, deltaMs: num
 
 /**
  * Handle a move being made (turn end).
- * Resets periods for byo-yomi, adds increment for Fischer, etc.
+ * Resets periods for byoyomi, adds increment for Fischer, etc.
  */
 export function onMove(state: PlayerState, config: TimeControlConfig): PlayerState {
   const newState = { ...state, moves: state.moves + 1 }
