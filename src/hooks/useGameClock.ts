@@ -178,11 +178,19 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
     setGameState(createInitialGameState(config))
   }, [config, cancelScheduled])
 
+  // Start game from waiting state
+  const start = useCallback(async () => {
+    await initAudio()
+    play('click')
+    setGameState((prev) => (prev.status === 'waiting' ? { ...prev, status: 'running' } : prev))
+  }, [initAudio, play])
+
   return {
     gameState,
     switchTurn,
     pause,
     resume,
     reset,
+    start,
   }
 }
