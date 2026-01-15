@@ -8,9 +8,9 @@ describe('App desktop layout', () => {
     const outerWrapper = container.firstChild as HTMLElement
 
     expect(outerWrapper).toHaveClass('bg-neutral-950')
-    expect(outerWrapper).toHaveClass('lg:flex')
-    expect(outerWrapper).toHaveClass('lg:items-center')
-    expect(outerWrapper).toHaveClass('lg:justify-center')
+    expect(outerWrapper).toHaveClass('xl:flex')
+    expect(outerWrapper).toHaveClass('xl:items-center')
+    expect(outerWrapper).toHaveClass('xl:justify-center')
   })
 
   it('renders phone frame container with desktop constraints', () => {
@@ -19,9 +19,9 @@ describe('App desktop layout', () => {
     const phoneFrame = outerWrapper.firstChild as HTMLElement
 
     // Desktop frame constraints
-    expect(phoneFrame).toHaveClass('lg:h-[90vh]')
-    expect(phoneFrame).toHaveClass('lg:max-h-[844px]')
-    expect(phoneFrame).toHaveClass('lg:w-[390px]')
+    expect(phoneFrame).toHaveClass('xl:h-[90vh]')
+    expect(phoneFrame).toHaveClass('xl:max-h-[844px]')
+    expect(phoneFrame).toHaveClass('xl:w-[390px]')
   })
 
   it('renders phone frame with visual styling on desktop', () => {
@@ -30,11 +30,11 @@ describe('App desktop layout', () => {
     const phoneFrame = outerWrapper.firstChild as HTMLElement
 
     // Visual frame styling
-    expect(phoneFrame).toHaveClass('lg:rounded-[3rem]')
-    expect(phoneFrame).toHaveClass('lg:border-4')
-    expect(phoneFrame).toHaveClass('lg:border-neutral-700')
-    expect(phoneFrame).toHaveClass('lg:shadow-2xl')
-    expect(phoneFrame).toHaveClass('lg:overflow-hidden')
+    expect(phoneFrame).toHaveClass('xl:rounded-[3rem]')
+    expect(phoneFrame).toHaveClass('xl:border-4')
+    expect(phoneFrame).toHaveClass('xl:border-neutral-700')
+    expect(phoneFrame).toHaveClass('xl:shadow-2xl')
+    expect(phoneFrame).toHaveClass('xl:overflow-hidden')
   })
 
   it('renders full-width on mobile (base classes without lg: prefix)', () => {
