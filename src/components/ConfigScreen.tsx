@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Info, X, Github, Mail } from 'lucide-react'
 import type {
   GameConfig,
   TimeControlType,
@@ -6,8 +7,61 @@ import type {
   SoundProfile,
 } from '../core/gameState'
 
+const APP_VERSION = '1.1.0'
+
 type Props = {
   onStartGame: (config: GameConfig) => void
+}
+
+function MastodonIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.668 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z" />
+    </svg>
+  )
+}
+
+type NumberInputProps = {
+  value: number
+  onChange: (value: number) => void
+  min: number
+  max: number
+  className?: string
+}
+
+function NumberInput({ value, onChange, min, max, className }: NumberInputProps) {
+  const [localValue, setLocalValue] = useState(String(value))
+
+  // Sync local value when prop changes (e.g., reset)
+  useEffect(() => {
+    setLocalValue(String(value))
+  }, [value])
+
+  const handleBlur = () => {
+    const parsed = parseInt(localValue, 10)
+    if (isNaN(parsed) || localValue === '') {
+      // Empty or invalid: reset to min
+      setLocalValue(String(min))
+      onChange(min)
+    } else {
+      // Clamp to min/max
+      const clamped = Math.max(min, Math.min(max, parsed))
+      setLocalValue(String(clamped))
+      onChange(clamped)
+    }
+  }
+
+  return (
+    <input
+      type="text"
+      inputMode="numeric"
+      pattern="[0-9]*"
+      value={localValue}
+      onChange={(e) => setLocalValue(e.target.value)}
+      onBlur={handleBlur}
+      className={className}
+    />
+  )
 }
 
 const STORAGE_KEY = 'byo-yomi-config'
@@ -64,6 +118,7 @@ function saveConfig(config: StoredConfig): void {
 
 export function ConfigScreen({ onStartGame }: Props) {
   const [config, setConfig] = useState<StoredConfig>(loadConfig)
+  const [showAbout, setShowAbout] = useState(false)
 
   // Save to localStorage whenever config changes
   useEffect(() => {
@@ -113,9 +168,18 @@ export function ConfigScreen({ onStartGame }: Props) {
   return (
     <div className="h-full flex flex-col bg-neutral-900 text-white overflow-y-auto">
       {/* Header */}
-      <div className="p-6 text-center border-b border-neutral-700">
-        <h1 className="text-3xl font-bold">Byo-yomi</h1>
-        <p className="text-neutral-400 mt-1">Go Game Clock</p>
+      <div className="p-6 border-b border-neutral-700 text-center">
+        <h1 className="text-3xl font-bold">Byo-yomi Go Clock</h1>
+        <div className="flex items-center justify-center gap-1 mt-1">
+          <p className="text-neutral-400">HJKL Labs</p>
+          <button
+            onClick={() => setShowAbout(true)}
+            className="p-1 text-neutral-400 hover:text-white transition-colors"
+            aria-label="About"
+          >
+            <Info size={20} />
+          </button>
+        </div>
       </div>
 
       {/* Form */}
@@ -138,21 +202,19 @@ export function ConfigScreen({ onStartGame }: Props) {
         <div>
           <label className="block text-sm font-medium text-neutral-300 mb-2">Main Time</label>
           <div className="flex gap-2 items-center">
-            <input
-              type="number"
-              min="0"
-              max="999"
+            <NumberInput
               value={config.mainTimeMinutes}
-              onChange={(e) => updateConfig('mainTimeMinutes', parseInt(e.target.value) || 0)}
+              onChange={(v) => updateConfig('mainTimeMinutes', v)}
+              min={0}
+              max={999}
               className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-neutral-400">min</span>
-            <input
-              type="number"
-              min="0"
-              max="59"
+            <NumberInput
               value={config.mainTimeSeconds}
-              onChange={(e) => updateConfig('mainTimeSeconds', parseInt(e.target.value) || 0)}
+              onChange={(v) => updateConfig('mainTimeSeconds', v)}
+              min={0}
+              max={59}
               className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-neutral-400">sec</span>
@@ -164,12 +226,11 @@ export function ConfigScreen({ onStartGame }: Props) {
           <>
             <div>
               <label className="block text-sm font-medium text-neutral-300 mb-2">Periods</label>
-              <input
-                type="number"
-                min="1"
-                max="99"
+              <NumberInput
                 value={config.byoYomiPeriods}
-                onChange={(e) => updateConfig('byoYomiPeriods', parseInt(e.target.value) || 1)}
+                onChange={(v) => updateConfig('byoYomiPeriods', v)}
+                min={1}
+                max={99}
                 className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -178,14 +239,11 @@ export function ConfigScreen({ onStartGame }: Props) {
                 Time per Period
               </label>
               <div className="flex gap-2 items-center">
-                <input
-                  type="number"
-                  min="1"
-                  max="999"
+                <NumberInput
                   value={config.byoYomiPeriodSeconds}
-                  onChange={(e) =>
-                    updateConfig('byoYomiPeriodSeconds', parseInt(e.target.value) || 1)
-                  }
+                  onChange={(v) => updateConfig('byoYomiPeriodSeconds', v)}
+                  min={1}
+                  max={999}
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span className="text-neutral-400">sec</span>
@@ -201,12 +259,11 @@ export function ConfigScreen({ onStartGame }: Props) {
               <label className="block text-sm font-medium text-neutral-300 mb-2">
                 Stones per Period
               </label>
-              <input
-                type="number"
-                min="1"
-                max="99"
+              <NumberInput
                 value={config.canadianStones}
-                onChange={(e) => updateConfig('canadianStones', parseInt(e.target.value) || 1)}
+                onChange={(v) => updateConfig('canadianStones', v)}
+                min={1}
+                max={99}
                 className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -215,25 +272,19 @@ export function ConfigScreen({ onStartGame }: Props) {
                 Overtime Duration
               </label>
               <div className="flex gap-2 items-center">
-                <input
-                  type="number"
-                  min="0"
-                  max="999"
+                <NumberInput
                   value={config.canadianOvertimeMinutes}
-                  onChange={(e) =>
-                    updateConfig('canadianOvertimeMinutes', parseInt(e.target.value) || 0)
-                  }
+                  onChange={(v) => updateConfig('canadianOvertimeMinutes', v)}
+                  min={0}
+                  max={999}
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span className="text-neutral-400">min</span>
-                <input
-                  type="number"
-                  min="0"
-                  max="59"
+                <NumberInput
                   value={config.canadianOvertimeSeconds}
-                  onChange={(e) =>
-                    updateConfig('canadianOvertimeSeconds', parseInt(e.target.value) || 0)
-                  }
+                  onChange={(v) => updateConfig('canadianOvertimeSeconds', v)}
+                  min={0}
+                  max={59}
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <span className="text-neutral-400">sec</span>
@@ -249,14 +300,11 @@ export function ConfigScreen({ onStartGame }: Props) {
               Increment per Move
             </label>
             <div className="flex gap-2 items-center">
-              <input
-                type="number"
-                min="0"
-                max="999"
+              <NumberInput
                 value={config.fischerIncrementSeconds}
-                onChange={(e) =>
-                  updateConfig('fischerIncrementSeconds', parseInt(e.target.value) || 0)
-                }
+                onChange={(v) => updateConfig('fischerIncrementSeconds', v)}
+                min={0}
+                max={999}
                 className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <span className="text-neutral-400">sec</span>
@@ -272,9 +320,9 @@ export function ConfigScreen({ onStartGame }: Props) {
             onChange={(e) => updateConfig('soundProfile', e.target.value as SoundProfile)}
             className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="silent">Silent</option>
-            <option value="subtle">Subtle</option>
-            <option value="intense">Intense</option>
+            <option value="silent">Silent – No sounds</option>
+            <option value="subtle">Subtle – Quiet beeps and countdown</option>
+            <option value="intense">Intense – Louder for noisy environments</option>
           </select>
         </div>
       </div>
@@ -288,6 +336,66 @@ export function ConfigScreen({ onStartGame }: Props) {
           Start Game
         </button>
       </div>
+
+      {/* About Modal */}
+      {showAbout && (
+        <div
+          className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+          onClick={() => setShowAbout(false)}
+        >
+          <div
+            className="bg-neutral-800 rounded-xl max-w-sm w-full p-6 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowAbout(false)}
+              className="absolute right-4 top-4 p-1 text-neutral-400 hover:text-white transition-colors"
+              aria-label="Close"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold">Byo-yomi</h2>
+              <p className="text-neutral-400 mt-1">v{APP_VERSION}</p>
+            </div>
+
+            <div className="text-center mb-6">
+              <p className="text-neutral-300">
+                Created by <span className="text-white font-medium">Thang Do</span>
+              </p>
+            </div>
+
+            <div className="flex justify-center gap-6">
+              <a
+                href="https://github.com/hjkl-vn/byo-yomi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 text-neutral-400 hover:text-white transition-colors"
+                aria-label="GitHub"
+              >
+                <Github size={24} />
+              </a>
+              <a
+                href="https://social.linux.pizza/@csessh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 text-neutral-400 hover:text-white transition-colors"
+                aria-label="Mastodon"
+              >
+                <MastodonIcon className="w-6 h-6" />
+              </a>
+              <a
+                href="mailto:tdo@hjkl.vn"
+                className="p-3 text-neutral-400 hover:text-white transition-colors"
+                aria-label="Email"
+              >
+                <Mail size={24} />
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

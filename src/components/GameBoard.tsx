@@ -63,17 +63,17 @@ export function GameBoard({ config, onBackToConfig }: Props) {
       </div>
 
       {/* Center divider with control buttons */}
-      <div className="h-14 bg-neutral-500 flex items-center justify-center gap-3 z-10">
+      <div className="h-[70px] bg-neutral-500 flex items-center justify-center gap-4 z-10">
         {gameState.status !== 'ended' && (
           <button
             onClick={handlePauseResume}
-            className="p-3 rounded-full bg-neutral-600 hover:bg-neutral-700 active:bg-neutral-800 transition-colors"
+            className="p-4 rounded-full bg-neutral-600 hover:bg-neutral-700 active:bg-neutral-800 transition-colors"
             aria-label={gameState.status === 'paused' ? 'Resume' : 'Pause'}
           >
             {gameState.status === 'paused' ? (
-              <Play className="w-5 h-5 text-white" />
+              <Play className="w-6 h-6 text-white" />
             ) : (
-              <Pause className="w-5 h-5 text-white" />
+              <Pause className="w-6 h-6 text-white" />
             )}
           </button>
         )}
@@ -81,17 +81,17 @@ export function GameBoard({ config, onBackToConfig }: Props) {
           <>
             <button
               onClick={handleRematch}
-              className="p-3 rounded-full bg-neutral-700 hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
+              className="p-4 rounded-full bg-neutral-700 hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
               aria-label="Restart"
             >
-              <RotateCcw className="w-5 h-5 text-white" />
+              <RotateCcw className="w-6 h-6 text-white" />
             </button>
             <button
               onClick={handleNewGame}
-              className="p-3 rounded-full bg-neutral-700 hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
+              className="p-4 rounded-full bg-neutral-700 hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
               aria-label="Settings"
             >
-              <Settings className="w-5 h-5 text-white" />
+              <Settings className="w-6 h-6 text-white" />
             </button>
           </>
         )}
