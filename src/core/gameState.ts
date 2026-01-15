@@ -56,7 +56,7 @@ export type PlayerState = {
 }
 
 // Overall game state
-export type GameStatus = 'running' | 'paused' | 'ended'
+export type GameStatus = 'waiting' | 'running' | 'paused' | 'ended'
 export type Player = 'black' | 'white'
 
 export type GameState = {
@@ -80,7 +80,7 @@ export function createInitialPlayerState(config: TimeControlConfig): PlayerState
 // Create initial game state from config
 export function createInitialGameState(config: GameConfig): GameState {
   return {
-    status: 'running',
+    status: 'waiting',
     activePlayer: 'black',
     black: createInitialPlayerState(config.timeControl),
     white: createInitialPlayerState(config.timeControl),

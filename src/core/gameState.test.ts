@@ -80,7 +80,7 @@ describe('createInitialGameState', () => {
     }
     const state = createInitialGameState(config)
 
-    expect(state.status).toBe('running')
+    expect(state.status).toBe('waiting')
     expect(state.activePlayer).toBe('black')
     expect(state.winner).toBe(null)
   })
