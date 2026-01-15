@@ -12,6 +12,8 @@ npm run lint          # Run ESLint
 npm run lint:fix      # Auto-fix lint issues
 npm run format        # Format all files with Prettier
 npm run format:check  # Check formatting (used in CI)
+npm run deploy        # Build and deploy to Cloudflare Workers
+npm run deploy:preview # Deploy to preview environment
 ```
 
 ## Docker

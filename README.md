@@ -57,6 +57,22 @@ docker compose up -d
 docker compose down
 ```
 
+### Cloudflare Workers
+
+```bash
+# Deploy to production
+npm run deploy
+
+# Deploy to preview environment
+npm run deploy:preview
+```
+
+Requires [wrangler authentication](https://developers.cloudflare.com/workers/wrangler/commands/#login):
+
+```bash
+npx wrangler login
+```
+
 ## Tech Stack
 
 - React 18
