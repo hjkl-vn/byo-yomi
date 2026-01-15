@@ -21,6 +21,8 @@ npm run deploy:preview # Deploy to preview environment
 
 Requires Node.js 22+.
 
+Pre-commit hooks (Husky + lint-staged) auto-run lint and format on staged files.
+
 ## Docker
 
 ```bash
@@ -60,3 +62,4 @@ Framework-agnostic TypeScript modules:
 - Time precision uses `performance.now()` via requestAnimationFrame
 - Audio uses Web Audio API for sample-accurate scheduling of countdown beeps
 - Portrait-only layout with device lying flat between players
+- Tailwind CSS v4 (uses `@import 'tailwindcss'` syntax, not v3 directives)
