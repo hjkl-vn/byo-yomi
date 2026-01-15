@@ -19,11 +19,13 @@ function App() {
   }
 
   return (
-    <div className="h-full w-full">
-      {screen === 'config' && <ConfigScreen onStartGame={handleStartGame} />}
-      {screen === 'game' && gameConfig && (
-        <GameBoard config={gameConfig} onBackToConfig={handleBackToConfig} />
-      )}
+    <div className="h-full w-full bg-neutral-950 lg:flex lg:items-center lg:justify-center">
+      <div className="h-full w-full lg:h-[90vh] lg:max-h-[844px] lg:w-[390px] lg:rounded-[3rem] lg:border-4 lg:border-neutral-700 lg:shadow-2xl lg:overflow-hidden">
+        {screen === 'config' && <ConfigScreen onStartGame={handleStartGame} />}
+        {screen === 'game' && gameConfig && (
+          <GameBoard config={gameConfig} onBackToConfig={handleBackToConfig} />
+        )}
+      </div>
     </div>
   )
 }

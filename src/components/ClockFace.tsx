@@ -21,13 +21,6 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
   const textColor = player === 'black' ? 'text-neutral-100' : 'text-neutral-900'
   const dimmedOpacity = isActive ? 'opacity-100' : 'opacity-50'
 
-  // Active glow effect
-  const glowClass = isActive
-    ? player === 'black'
-      ? 'ring-4 ring-blue-500 ring-inset'
-      : 'ring-4 ring-blue-600 ring-inset'
-    : ''
-
   // Show low time warning in overtime, or in Fischer mode (sudden death)
   const showLowTimeWarning = isLowTime && (state.isInOvertime || config.type === 'fischer')
 
@@ -38,7 +31,7 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
     <div
       className={`
         h-full w-full flex flex-col items-center justify-center
-        ${bgColor} ${dimmedOpacity} ${glowClass}
+        ${bgColor} ${dimmedOpacity}
         transition-opacity duration-200
         cursor-pointer select-none
         relative
