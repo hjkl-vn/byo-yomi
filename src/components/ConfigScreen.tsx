@@ -371,7 +371,7 @@ export function ConfigScreen({ onStartGame }: Props) {
             </button>
 
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold">Byoyomi</h2>
+              <h2 className="text-2xl font-bold">Byoyomi (秒読み)</h2>
               <p className="text-neutral-400 mt-1">v{APP_VERSION}</p>
             </div>
 
