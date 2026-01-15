@@ -12,22 +12,21 @@ type Props = {
 }
 
 export function GameBoard({ config, onBackToConfig }: Props) {
-  const { gameState, switchTurn, pause, resume, reset } = useGameClock(config)
+  const { gameState, switchTurn, pause, resume, reset, start } = useGameClock(config)
 
   // Keep screen awake during active game
   useWakeLock(gameState.status === 'running')
 
-  const handleWhiteTap = useCallback(() => {
-    if (gameState.status === 'running' && gameState.activePlayer === 'white') {
-      switchTurn()
-    }
-  }, [gameState.status, gameState.activePlayer, switchTurn])
-
-  const handleBlackTap = useCallback(() => {
-    if (gameState.status === 'running' && gameState.activePlayer === 'black') {
-      switchTurn()
-    }
-  }, [gameState.status, gameState.activePlayer, switchTurn])
+  const handleTap = useCallback(
+    (player: 'black' | 'white') => {
+      if (gameState.status === 'waiting') {
+        start()
+      } else if (gameState.status === 'running' && gameState.activePlayer === player) {
+        switchTurn()
+      }
+    },
+    [gameState.status, gameState.activePlayer, start, switchTurn]
+  )
 
   const handlePauseResume = useCallback(() => {
     if (gameState.status === 'running') {
@@ -58,13 +57,13 @@ export function GameBoard({ config, onBackToConfig }: Props) {
           state={gameState.white}
           config={config.timeControl}
           isActive={gameState.activePlayer === 'white' && gameState.status === 'running'}
-          onTap={handleWhiteTap}
+          onTap={() => handleTap('white')}
         />
       </div>
 
       {/* Center divider with control buttons */}
       <div className="h-[70px] bg-neutral-500 flex items-center justify-center gap-4 z-10">
-        {gameState.status !== 'ended' && (
+        {gameState.status !== 'ended' && gameState.status !== 'waiting' && (
           <button
             onClick={handlePauseResume}
             className="p-4 rounded-full bg-neutral-600 hover:bg-neutral-700 active:bg-neutral-800 transition-colors"
@@ -104,7 +103,7 @@ export function GameBoard({ config, onBackToConfig }: Props) {
           state={gameState.black}
           config={config.timeControl}
           isActive={gameState.activePlayer === 'black' && gameState.status === 'running'}
-          onTap={handleBlackTap}
+          onTap={() => handleTap('black')}
         />
       </div>
 
