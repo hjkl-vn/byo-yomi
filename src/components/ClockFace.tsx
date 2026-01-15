@@ -28,13 +28,11 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
       : 'ring-4 ring-blue-600 ring-inset'
     : ''
 
-  // Low time warning color
-  const timeColor =
-    isLowTime && state.isInOvertime
-      ? player === 'black'
-        ? 'text-red-400'
-        : 'text-red-600'
-      : textColor
+  // Show low time warning in overtime, or in Fischer mode (sudden death)
+  const showLowTimeWarning = isLowTime && (state.isInOvertime || config.type === 'fischer')
+
+  // Low time warning color - bright red visible on both backgrounds
+  const timeColor = showLowTimeWarning ? 'text-red-500' : textColor
 
   return (
     <div
@@ -54,12 +52,15 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
           ${player === 'black' ? 'text-neutral-500' : 'text-neutral-400'}
         `}
       >
-        {state.moves} moves
+        {state.moves} {state.moves === 1 ? 'move' : 'moves'}
       </div>
 
       {/* Main time display */}
       <div
-        className={`text-[6rem] sm:text-[8rem] font-bold leading-none ${timeColor}`}
+        className={`
+          text-[6rem] sm:text-[8rem] font-bold leading-none ${timeColor}
+          ${showLowTimeWarning ? 'animate-slow-pulse' : ''}
+        `}
         style={{ fontFamily: "'Space Mono', monospace" }}
       >
         {timeString}

@@ -9,6 +9,7 @@ npm run dev           # Start dev server (http://localhost:5173)
 npm run build         # TypeScript check + production build
 npm test              # Run all tests
 npm run test:watch    # Run tests in watch mode
+npx vitest run src/core/timeControl.test.ts  # Run a single test file
 npm run lint          # Run ESLint
 npm run lint:fix      # Auto-fix lint issues
 npm run format        # Format all files with Prettier
@@ -17,6 +18,8 @@ npm run preview       # Preview production build
 npm run deploy        # Build and deploy to Cloudflare Workers
 npm run deploy:preview # Deploy to preview environment
 ```
+
+Requires Node.js 22+.
 
 ## Docker
 

@@ -215,7 +215,7 @@ export function ConfigScreen({ onStartGame }: Props) {
               max={999}
               className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <span className="text-neutral-400">min</span>
+            <span className="text-neutral-400">minutes</span>
             <NumberInput
               id="mainTimeSeconds"
               value={config.mainTimeSeconds}
@@ -224,7 +224,7 @@ export function ConfigScreen({ onStartGame }: Props) {
               max={59}
               className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <span className="text-neutral-400">sec</span>
+            <span className="text-neutral-400">seconds</span>
           </div>
         </div>
 
@@ -255,7 +255,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   max={999}
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <span className="text-neutral-400">sec</span>
+                <span className="text-neutral-400">seconds</span>
               </div>
             </div>
           </>
@@ -290,7 +290,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   max={999}
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <span className="text-neutral-400">min</span>
+                <span className="text-neutral-400">minutes</span>
                 <NumberInput
                   id="canadianOvertimeSeconds"
                   value={config.canadianOvertimeSeconds}
@@ -299,7 +299,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   max={59}
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <span className="text-neutral-400">sec</span>
+                <span className="text-neutral-400">seconds</span>
               </div>
             </div>
           </>
@@ -320,7 +320,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                 max={999}
                 className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <span className="text-neutral-400">sec</span>
+              <span className="text-neutral-400">seconds</span>
             </div>
           </div>
         )}
