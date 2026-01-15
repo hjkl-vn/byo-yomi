@@ -6,10 +6,12 @@ type Props = {
   state: PlayerState
   config: TimeControlConfig
   isActive: boolean
+  isWaiting: boolean
   onTap: () => void
 }
 
-export function ClockFace({ player, state, config, isActive, onTap }: Props) {
+export function ClockFace({ player, state, config, isActive, isWaiting, onTap }: Props) {
+  void isWaiting // Will be used for pulsing animation in Task 5
   const displayTime = getDisplayTime(state)
   const timeString = formatTime(displayTime)
 
