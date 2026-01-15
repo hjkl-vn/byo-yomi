@@ -172,7 +172,7 @@ export function ConfigScreen({ onStartGame }: Props) {
     <div className="h-full flex flex-col bg-neutral-900 text-white overflow-y-auto">
       {/* Header */}
       <div className="p-6 xl:p-4 border-b border-neutral-700 text-center">
-        <h1 className="text-3xl xl:text-2xl font-bold">Byoyomi (秒読み)</h1>
+        <h1 className="text-3xl xl:text-2xl font-bold">Byoyomi Clock Online</h1>
         <div className="flex items-center justify-center gap-1 mt-1">
           <p className="text-neutral-400">HJKL Labs</p>
           <button
