@@ -7,11 +7,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm run dev           # Start dev server (http://localhost:5173)
 npm run build         # TypeScript check + production build
-npm run preview       # Preview production build
+npm test              # Run all tests
+npm run test:watch    # Run tests in watch mode
 npm run lint          # Run ESLint
 npm run lint:fix      # Auto-fix lint issues
 npm run format        # Format all files with Prettier
 npm run format:check  # Check formatting (used in CI)
+npm run preview       # Preview production build
 npm run deploy        # Build and deploy to Cloudflare Workers
 npm run deploy:preview # Deploy to preview environment
 ```
@@ -25,7 +27,7 @@ docker compose up -d       # Run in background
 
 ## Architecture
 
-This is a Go/Baduk game clock PWA with three time control modes: byo-yomi, Canadian byo-yomi, and Fischer.
+This is a Go/Baduk game clock PWA with three time control modes: byoyomi, Canadian byoyomi, and Fischer.
 
 ### Core Layer (`src/core/`)
 
@@ -44,7 +46,7 @@ Framework-agnostic TypeScript modules:
 
 ### UI Components
 
-- **ConfigScreen** - Time control configuration with localStorage persistence (key: `byo-yomi-config`)
+- **ConfigScreen** - Time control configuration with localStorage persistence (key: `byoyomi-config`)
 - **GameBoard** - Split-screen layout with two ClockFace components, top one rotated 180°
 - **ClockFace** - Displays time, overtime info (periods/stones), move count. Mode-specific rendering for each time control type.
 - **GameOverModal** - End game overlay with rematch/new game options

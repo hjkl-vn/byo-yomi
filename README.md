@@ -1,10 +1,10 @@
-# Byo-yomi - Go Game Clock
+# Byoyomi - Go Game Clock
 
 A mobile-friendly game clock for Go/Baduk with support for multiple time control systems.
 
 ## Features
 
-- **Time Controls**: Byo-yomi, Canadian byo-yomi, and Fischer
+- **Time Controls**: Byoyomi, Canadian byoyomi, and Fischer
 - **Mobile-First Design**: Portrait layout optimized for phones and tablets
 - **Face-to-Face Play**: Device lies flat between players, each clock rotated to face its player
 - **Sound Profiles**: Silent, Subtle, and Intense audio feedback
@@ -57,9 +57,27 @@ docker compose up -d
 docker compose down
 ```
 
-### Cloudflare Workers
+## Deployment
+
+This app is deployed to [Cloudflare Workers](https://workers.cloudflare.com/) as a static site using Workers Assets.
+
+### How It Works
+
+1. `npm run build` creates a production build in `dist/`
+2. Wrangler uploads the static assets to Cloudflare's edge network
+3. The worker serves the SPA with proper routing (404s redirect to index.html)
+
+Configuration is in `wrangler.json`:
+
+- `assets.directory` - Points to the Vite build output (`./dist`)
+- `assets.not_found_handling` - Set to `single-page-application` for client-side routing
+
+### Deploy Commands
 
 ```bash
+# Authenticate with Cloudflare (one-time setup)
+npx wrangler login
+
 # Deploy to production
 npm run deploy
 
@@ -67,11 +85,9 @@ npm run deploy
 npm run deploy:preview
 ```
 
-Requires [wrangler authentication](https://developers.cloudflare.com/workers/wrangler/commands/#login):
+### CI/CD
 
-```bash
-npx wrangler login
-```
+The app can be deployed automatically via GitHub Actions by adding `CLOUDFLARE_API_TOKEN` to repository secrets.
 
 ## Tech Stack
 
