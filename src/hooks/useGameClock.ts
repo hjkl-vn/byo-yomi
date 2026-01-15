@@ -11,23 +11,46 @@ export type GameClockCallbacks = {
 }
 
 export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks) {
-  const [gameState, setGameState] = useState<GameState>(() =>
-    createInitialGameState(config)
-  )
+  const [gameState, setGameState] = useState<GameState>(() => createInitialGameState(config))
 
   const lastTickRef = useRef<number>(0)
   const animationFrameRef = useRef<number>(0)
   const lowTimeAlertedRef = useRef<Set<number>>(new Set())
   const enteredOvertimeRef = useRef<Set<Player>>(new Set())
 
-  const { initAudio, play, scheduleCountdown, cancelScheduled } = useAudio(
-    config.soundProfile
-  )
+  const { initAudio, play, scheduleCountdown, cancelScheduled } = useAudio(config.soundProfile)
 
-  // Game loop
-  const gameLoop = useCallback(
-    (timestamp: number) => {
-      if (gameState.status !== 'running') {
+  // Store latest values in refs to avoid stale closures in animation loop
+  const gameStateRef = useRef(gameState)
+  const configRef = useRef(config)
+  const callbacksRef = useRef(callbacks)
+
+  useEffect(() => {
+    gameStateRef.current = gameState
+  }, [gameState])
+
+  useEffect(() => {
+    configRef.current = config
+  }, [config])
+
+  useEffect(() => {
+    callbacksRef.current = callbacks
+  }, [callbacks])
+
+  // Start/stop game loop based on status
+  useEffect(() => {
+    if (gameState.status !== 'running') {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+        animationFrameRef.current = 0
+      }
+      return
+    }
+
+    lastTickRef.current = 0
+
+    const gameLoop = (timestamp: number) => {
+      if (gameStateRef.current.status !== 'running') {
         animationFrameRef.current = 0
         return
       }
@@ -46,20 +69,20 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
           const activePlayer = prevState.activePlayer
           const playerState = prevState[activePlayer]
 
-          const result = tick(playerState, config.timeControl, deltaMs)
+          const result = tick(playerState, configRef.current.timeControl, deltaMs)
 
           // Handle entering overtime
           if (result.enteredOvertime && !enteredOvertimeRef.current.has(activePlayer)) {
             enteredOvertimeRef.current.add(activePlayer)
             play('alert')
-            callbacks?.onEnteredOvertime?.(activePlayer)
+            callbacksRef.current?.onEnteredOvertime?.(activePlayer)
           }
 
           // Handle game over
           if (result.expired) {
             const winner = activePlayer === 'black' ? 'white' : 'black'
             play('gong')
-            callbacks?.onGameOver?.(winner)
+            callbacksRef.current?.onGameOver?.(winner)
             return {
               ...prevState,
               [activePlayer]: result.newState,
@@ -73,8 +96,8 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
             ? result.newState.overtime?.type === 'byoyomi'
               ? result.newState.overtime.periodTimeRemainingMs
               : result.newState.overtime?.type === 'canadian'
-              ? result.newState.overtime.overtimeRemainingMs
-              : result.newState.mainTimeRemainingMs
+                ? result.newState.overtime.overtimeRemainingMs
+                : result.newState.mainTimeRemainingMs
             : result.newState.mainTimeRemainingMs
 
           const displaySeconds = Math.ceil((displayMs ?? 0) / 1000)
@@ -83,14 +106,14 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
           if (displaySeconds === 10 && !lowTimeAlertedRef.current.has(10)) {
             lowTimeAlertedRef.current.add(10)
             play('tick')
-            callbacks?.onLowTime?.(activePlayer, 10)
+            callbacksRef.current?.onLowTime?.(activePlayer, 10)
           }
 
           // Schedule countdown at 5 seconds
           if (displaySeconds === 5 && !lowTimeAlertedRef.current.has(5)) {
             lowTimeAlertedRef.current.add(5)
             scheduleCountdown(5)
-            callbacks?.onLowTime?.(activePlayer, 5)
+            callbacksRef.current?.onLowTime?.(activePlayer, 5)
           }
 
           return {
@@ -101,16 +124,9 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
       }
 
       animationFrameRef.current = requestAnimationFrame(gameLoop)
-    },
-    [gameState.status, config.timeControl, play, scheduleCountdown, callbacks]
-  )
-
-  // Start/stop game loop based on status
-  useEffect(() => {
-    if (gameState.status === 'running' && animationFrameRef.current === 0) {
-      lastTickRef.current = 0
-      animationFrameRef.current = requestAnimationFrame(gameLoop)
     }
+
+    animationFrameRef.current = requestAnimationFrame(gameLoop)
 
     return () => {
       if (animationFrameRef.current) {
@@ -118,7 +134,7 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
         animationFrameRef.current = 0
       }
     }
-  }, [gameState.status, gameLoop])
+  }, [gameState.status, play, scheduleCountdown])
 
   // Switch turn (end current player's turn)
   const switchTurn = useCallback(async () => {
@@ -152,17 +168,13 @@ export function useGameClock(config: GameConfig, callbacks?: GameClockCallbacks)
   // Pause game
   const pause = useCallback(() => {
     cancelScheduled()
-    setGameState((prev) =>
-      prev.status === 'running' ? { ...prev, status: 'paused' } : prev
-    )
+    setGameState((prev) => (prev.status === 'running' ? { ...prev, status: 'paused' } : prev))
   }, [cancelScheduled])
 
   // Resume game
   const resume = useCallback(async () => {
     await initAudio()
-    setGameState((prev) =>
-      prev.status === 'paused' ? { ...prev, status: 'running' } : prev
-    )
+    setGameState((prev) => (prev.status === 'paused' ? { ...prev, status: 'running' } : prev))
   }, [initAudio])
 
   // Reset game with same config

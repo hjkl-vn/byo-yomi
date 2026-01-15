@@ -161,11 +161,7 @@ export class AudioEngine {
   /**
    * Create a simple tone.
    */
-  private createTone(
-    frequency: number,
-    duration: number,
-    type: OscillatorType
-  ): AudioBuffer {
+  private createTone(frequency: number, duration: number, type: OscillatorType): AudioBuffer {
     if (!this.audioContext) throw new Error('AudioContext not initialized')
 
     const sampleRate = this.audioContext.sampleRate
@@ -192,7 +188,10 @@ export class AudioEngine {
       }
 
       // Apply envelope (fade in/out)
-      const envelope = Math.min(1, Math.min(i / (sampleRate * 0.01), (length - i) / (sampleRate * 0.01)))
+      const envelope = Math.min(
+        1,
+        Math.min(i / (sampleRate * 0.01), (length - i) / (sampleRate * 0.01))
+      )
       data[i] = sample * envelope * 0.5
     }
 
@@ -218,7 +217,10 @@ export class AudioEngine {
       const sample = Math.sin(2 * Math.PI * freq * t)
 
       // Envelope
-      const envelope = Math.min(1, Math.min(i / (sampleRate * 0.01), (length - i) / (sampleRate * 0.02)))
+      const envelope = Math.min(
+        1,
+        Math.min(i / (sampleRate * 0.01), (length - i) / (sampleRate * 0.02))
+      )
       data[i] = sample * envelope * 0.5
     }
 

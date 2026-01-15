@@ -10,7 +10,7 @@ type Props = {
 }
 
 export function ClockFace({ player, state, config, isActive, onTap }: Props) {
-  const displayTime = getDisplayTime(state, config)
+  const displayTime = getDisplayTime(state)
   const timeString = formatTime(displayTime)
 
   // Determine if in low time (under 10 seconds)
@@ -29,11 +29,12 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
     : ''
 
   // Low time warning color
-  const timeColor = isLowTime && state.isInOvertime
-    ? player === 'black'
-      ? 'text-red-400'
-      : 'text-red-600'
-    : textColor
+  const timeColor =
+    isLowTime && state.isInOvertime
+      ? player === 'black'
+        ? 'text-red-400'
+        : 'text-red-600'
+      : textColor
 
   return (
     <div
@@ -69,11 +70,7 @@ export function ClockFace({ player, state, config, isActive, onTap }: Props) {
   )
 }
 
-function renderModeInfo(
-  state: PlayerState,
-  config: TimeControlConfig,
-  player: 'black' | 'white'
-) {
+function renderModeInfo(state: PlayerState, config: TimeControlConfig, player: 'black' | 'white') {
   const secondaryColor = player === 'black' ? 'text-neutral-400' : 'text-neutral-500'
 
   if (config.type === 'byoyomi') {
@@ -90,9 +87,14 @@ function renderModeInfo(
             key={i}
             className={`
               inline-block w-5 h-5 sm:w-6 sm:h-6 rounded-full mx-1.5
-              ${isFilled
-                ? player === 'black' ? 'bg-blue-400' : 'bg-blue-600'
-                : player === 'black' ? 'bg-neutral-700' : 'bg-neutral-300'
+              ${
+                isFilled
+                  ? player === 'black'
+                    ? 'bg-blue-400'
+                    : 'bg-blue-600'
+                  : player === 'black'
+                    ? 'bg-neutral-700'
+                    : 'bg-neutral-300'
               }
             `}
           />
@@ -122,7 +124,9 @@ function renderModeInfo(
       const { stonesRemaining } = state.overtime
       return (
         <div className="text-center">
-          <div className={`text-4xl sm:text-5xl font-semibold ${player === 'black' ? 'text-neutral-200' : 'text-neutral-700'}`}>
+          <div
+            className={`text-4xl sm:text-5xl font-semibold ${player === 'black' ? 'text-neutral-200' : 'text-neutral-700'}`}
+          >
             {stonesRemaining} stones left
           </div>
         </div>

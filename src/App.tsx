@@ -20,9 +20,7 @@ function App() {
 
   return (
     <div className="h-full w-full">
-      {screen === 'config' && (
-        <ConfigScreen onStartGame={handleStartGame} />
-      )}
+      {screen === 'config' && <ConfigScreen onStartGame={handleStartGame} />}
       {screen === 'game' && gameConfig && (
         <GameBoard config={gameConfig} onBackToConfig={handleBackToConfig} />
       )}

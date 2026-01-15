@@ -20,18 +20,41 @@ A mobile-friendly game clock for Go/Baduk with support for multiple time control
 
 ## Development
 
+### Prerequisites
+
+- Node.js 22+
+- npm
+
+### Local Development
+
 ```bash
 # Install dependencies
 npm install
 
-# Start dev server
+# Start dev server (http://localhost:5173)
 npm run dev
+
+# Run linter
+npm run lint
 
 # Build for production
 npm run build
 
 # Preview production build
 npm run preview
+```
+
+### Docker
+
+```bash
+# Build and run (http://localhost:8080)
+docker compose up --build
+
+# Run in background
+docker compose up -d
+
+# Stop
+docker compose down
 ```
 
 ## Tech Stack

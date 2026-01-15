@@ -70,10 +70,7 @@ export function ConfigScreen({ onStartGame }: Props) {
     saveConfig(config)
   }, [config])
 
-  const updateConfig = <K extends keyof StoredConfig>(
-    key: K,
-    value: StoredConfig[K]
-  ) => {
+  const updateConfig = <K extends keyof StoredConfig>(key: K, value: StoredConfig[K]) => {
     setConfig((prev) => ({ ...prev, [key]: value }))
   }
 
@@ -95,8 +92,7 @@ export function ConfigScreen({ onStartGame }: Props) {
           type: 'canadian',
           mainTimeSeconds,
           stones: config.canadianStones,
-          overtimeSeconds:
-            config.canadianOvertimeMinutes * 60 + config.canadianOvertimeSeconds,
+          overtimeSeconds: config.canadianOvertimeMinutes * 60 + config.canadianOvertimeSeconds,
         }
         break
       case 'fischer':
@@ -126,14 +122,10 @@ export function ConfigScreen({ onStartGame }: Props) {
       <div className="flex-1 p-6 space-y-6">
         {/* Time Control Type */}
         <div>
-          <label className="block text-sm font-medium text-neutral-300 mb-2">
-            Time Control
-          </label>
+          <label className="block text-sm font-medium text-neutral-300 mb-2">Time Control</label>
           <select
             value={config.timeControlType}
-            onChange={(e) =>
-              updateConfig('timeControlType', e.target.value as TimeControlType)
-            }
+            onChange={(e) => updateConfig('timeControlType', e.target.value as TimeControlType)}
             className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="byoyomi">Byo-yomi</option>
@@ -144,18 +136,14 @@ export function ConfigScreen({ onStartGame }: Props) {
 
         {/* Main Time */}
         <div>
-          <label className="block text-sm font-medium text-neutral-300 mb-2">
-            Main Time
-          </label>
+          <label className="block text-sm font-medium text-neutral-300 mb-2">Main Time</label>
           <div className="flex gap-2 items-center">
             <input
               type="number"
               min="0"
               max="999"
               value={config.mainTimeMinutes}
-              onChange={(e) =>
-                updateConfig('mainTimeMinutes', parseInt(e.target.value) || 0)
-              }
+              onChange={(e) => updateConfig('mainTimeMinutes', parseInt(e.target.value) || 0)}
               className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-neutral-400">min</span>
@@ -164,9 +152,7 @@ export function ConfigScreen({ onStartGame }: Props) {
               min="0"
               max="59"
               value={config.mainTimeSeconds}
-              onChange={(e) =>
-                updateConfig('mainTimeSeconds', parseInt(e.target.value) || 0)
-              }
+              onChange={(e) => updateConfig('mainTimeSeconds', parseInt(e.target.value) || 0)}
               className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-neutral-400">sec</span>
@@ -177,17 +163,13 @@ export function ConfigScreen({ onStartGame }: Props) {
         {config.timeControlType === 'byoyomi' && (
           <>
             <div>
-              <label className="block text-sm font-medium text-neutral-300 mb-2">
-                Periods
-              </label>
+              <label className="block text-sm font-medium text-neutral-300 mb-2">Periods</label>
               <input
                 type="number"
                 min="1"
                 max="99"
                 value={config.byoYomiPeriods}
-                onChange={(e) =>
-                  updateConfig('byoYomiPeriods', parseInt(e.target.value) || 1)
-                }
+                onChange={(e) => updateConfig('byoYomiPeriods', parseInt(e.target.value) || 1)}
                 className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -202,10 +184,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   max="999"
                   value={config.byoYomiPeriodSeconds}
                   onChange={(e) =>
-                    updateConfig(
-                      'byoYomiPeriodSeconds',
-                      parseInt(e.target.value) || 1
-                    )
+                    updateConfig('byoYomiPeriodSeconds', parseInt(e.target.value) || 1)
                   }
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -227,9 +206,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                 min="1"
                 max="99"
                 value={config.canadianStones}
-                onChange={(e) =>
-                  updateConfig('canadianStones', parseInt(e.target.value) || 1)
-                }
+                onChange={(e) => updateConfig('canadianStones', parseInt(e.target.value) || 1)}
                 className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -244,10 +221,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   max="999"
                   value={config.canadianOvertimeMinutes}
                   onChange={(e) =>
-                    updateConfig(
-                      'canadianOvertimeMinutes',
-                      parseInt(e.target.value) || 0
-                    )
+                    updateConfig('canadianOvertimeMinutes', parseInt(e.target.value) || 0)
                   }
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -258,10 +232,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                   max="59"
                   value={config.canadianOvertimeSeconds}
                   onChange={(e) =>
-                    updateConfig(
-                      'canadianOvertimeSeconds',
-                      parseInt(e.target.value) || 0
-                    )
+                    updateConfig('canadianOvertimeSeconds', parseInt(e.target.value) || 0)
                   }
                   className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -284,10 +255,7 @@ export function ConfigScreen({ onStartGame }: Props) {
                 max="999"
                 value={config.fischerIncrementSeconds}
                 onChange={(e) =>
-                  updateConfig(
-                    'fischerIncrementSeconds',
-                    parseInt(e.target.value) || 0
-                  )
+                  updateConfig('fischerIncrementSeconds', parseInt(e.target.value) || 0)
                 }
                 className="w-24 bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -298,14 +266,10 @@ export function ConfigScreen({ onStartGame }: Props) {
 
         {/* Sound Profile */}
         <div>
-          <label className="block text-sm font-medium text-neutral-300 mb-2">
-            Sound Profile
-          </label>
+          <label className="block text-sm font-medium text-neutral-300 mb-2">Sound Profile</label>
           <select
             value={config.soundProfile}
-            onChange={(e) =>
-              updateConfig('soundProfile', e.target.value as SoundProfile)
-            }
+            onChange={(e) => updateConfig('soundProfile', e.target.value as SoundProfile)}
             className="w-full bg-neutral-800 border border-neutral-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="silent">Silent</option>

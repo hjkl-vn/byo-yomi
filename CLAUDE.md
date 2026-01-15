@@ -5,10 +5,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev      # Start dev server (http://localhost:5173)
-npm run build    # TypeScript check + production build
-npm run preview  # Preview production build
-npm run lint     # Run ESLint
+npm run dev           # Start dev server (http://localhost:5173)
+npm run build         # TypeScript check + production build
+npm run preview       # Preview production build
+npm run lint          # Run ESLint
+npm run lint:fix      # Auto-fix lint issues
+npm run format        # Format all files with Prettier
+npm run format:check  # Check formatting (used in CI)
+```
+
+## Docker
+
+```bash
+docker compose up --build  # Build and run (http://localhost:8080)
+docker compose up -d       # Run in background
 ```
 
 ## Architecture

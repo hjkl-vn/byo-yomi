@@ -1,9 +1,4 @@
-import type {
-  TimeControlConfig,
-  PlayerState,
-  ByoYomiOvertime,
-  CanadianOvertime,
-} from './gameState'
+import type { TimeControlConfig, PlayerState, ByoYomiOvertime, CanadianOvertime } from './gameState'
 
 export type TickResult = {
   newState: PlayerState
@@ -15,11 +10,7 @@ export type TickResult = {
  * Tick the clock for a player by the given delta time.
  * Returns the new player state and whether time expired.
  */
-export function tick(
-  state: PlayerState,
-  config: TimeControlConfig,
-  deltaMs: number
-): TickResult {
+export function tick(state: PlayerState, config: TimeControlConfig, deltaMs: number): TickResult {
   let newState = { ...state }
   let expired = false
   let enteredOvertime = false
@@ -62,22 +53,27 @@ export function tick(
  * Handle a move being made (turn end).
  * Resets periods for byo-yomi, adds increment for Fischer, etc.
  */
-export function onMove(
-  state: PlayerState,
-  config: TimeControlConfig
-): PlayerState {
+export function onMove(state: PlayerState, config: TimeControlConfig): PlayerState {
   const newState = { ...state, moves: state.moves + 1 }
 
   if (config.type === 'fischer' && !newState.isInOvertime) {
     // Add increment to main time
     newState.mainTimeRemainingMs += config.incrementSeconds * 1000
-  } else if (config.type === 'byoyomi' && newState.isInOvertime && newState.overtime?.type === 'byoyomi') {
+  } else if (
+    config.type === 'byoyomi' &&
+    newState.isInOvertime &&
+    newState.overtime?.type === 'byoyomi'
+  ) {
     // Reset period time (period not consumed if move made in time)
     newState.overtime = {
       ...newState.overtime,
       periodTimeRemainingMs: config.periodTimeSeconds * 1000,
     }
-  } else if (config.type === 'canadian' && newState.isInOvertime && newState.overtime?.type === 'canadian') {
+  } else if (
+    config.type === 'canadian' &&
+    newState.isInOvertime &&
+    newState.overtime?.type === 'canadian'
+  ) {
     // Decrement stones remaining
     const stones = newState.overtime.stonesRemaining - 1
     if (stones <= 0) {
@@ -187,7 +183,7 @@ export function formatTime(ms: number): string {
 /**
  * Get the display time for a player (main time or overtime time).
  */
-export function getDisplayTime(state: PlayerState, _config: TimeControlConfig): number {
+export function getDisplayTime(state: PlayerState): number {
   if (!state.isInOvertime) {
     return state.mainTimeRemainingMs
   }
