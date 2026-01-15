@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       includeAssets: ['favicon/*.png', 'favicon/*.ico', 'sounds/*.mp3'],
       manifest: {
         name: 'Byo-yomi - Go Game Clock',
