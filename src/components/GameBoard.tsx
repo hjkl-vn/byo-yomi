@@ -20,7 +20,8 @@ export function GameBoard({ config, onBackToConfig }: Props) {
   const handleTap = useCallback(
     (player: 'black' | 'white') => {
       if (gameState.status === 'waiting') {
-        start()
+        const firstActivePlayer = player === 'black' ? 'white' : 'black'
+        start(firstActivePlayer)
       } else if (gameState.status === 'running' && gameState.activePlayer === player) {
         switchTurn()
       }

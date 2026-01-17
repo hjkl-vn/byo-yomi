@@ -70,7 +70,7 @@ describe('useGameClock countdown beeps', () => {
 
     // Start the game
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     mockPlay.mockClear()
@@ -93,7 +93,7 @@ describe('useGameClock countdown beeps', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     mockPlay.mockClear()
@@ -115,7 +115,7 @@ describe('useGameClock countdown beeps', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     // First alert is for entering overtime
@@ -139,7 +139,7 @@ describe('useGameClock countdown beeps', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     mockPlay.mockClear()
@@ -164,7 +164,7 @@ describe('useGameClock countdown beeps', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     mockPlay.mockClear()
@@ -187,7 +187,7 @@ describe('useGameClock countdown beeps', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     mockPlay.mockClear()
@@ -207,7 +207,7 @@ describe('useGameClock countdown beeps', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     mockPlay.mockClear()
@@ -247,17 +247,33 @@ describe('useGameClock controls', () => {
     vi.restoreAllMocks()
   })
 
-  it('starts game from waiting state', async () => {
+  it('starts game from waiting state with black active', async () => {
     const config = createByoyomiConfig(60, 3, 30)
     const { result } = renderHook(() => useGameClock(config))
 
     expect(result.current.gameState.status).toBe('waiting')
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     expect(result.current.gameState.status).toBe('running')
+    expect(result.current.gameState.activePlayer).toBe('black')
+    expect(mockPlay).toHaveBeenCalledWith('click')
+  })
+
+  it('starts game with white active for handicap games', async () => {
+    const config = createByoyomiConfig(60, 3, 30)
+    const { result } = renderHook(() => useGameClock(config))
+
+    expect(result.current.gameState.status).toBe('waiting')
+
+    await act(async () => {
+      await result.current.start('white')
+    })
+
+    expect(result.current.gameState.status).toBe('running')
+    expect(result.current.gameState.activePlayer).toBe('white')
     expect(mockPlay).toHaveBeenCalledWith('click')
   })
 
@@ -266,7 +282,7 @@ describe('useGameClock controls', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     await act(async () => {
@@ -288,7 +304,7 @@ describe('useGameClock controls', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     // Run some time
@@ -312,7 +328,7 @@ describe('useGameClock controls', () => {
     const { result } = renderHook(() => useGameClock(config))
 
     await act(async () => {
-      await result.current.start()
+      await result.current.start('black')
     })
 
     expect(result.current.gameState.activePlayer).toBe('black')
