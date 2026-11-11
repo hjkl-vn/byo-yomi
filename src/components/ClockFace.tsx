@@ -38,7 +38,7 @@ export function ClockFace({ player, state, config, isActive, isWaiting, onTap }:
         relative
         ${isWaiting ? 'animate-pulse' : ''}
       `}
-      onClick={onTap}
+      onPointerDown={onTap}
     >
       {/* Move counter - bottom edge */}
       <div
